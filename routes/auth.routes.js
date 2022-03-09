@@ -121,6 +121,22 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
 });
 
+router.get('/users', (req, res, next) => {
+  User.find()
+    .then((response) => res.json(response))
+    .catch((err) => next(err));
+});
+
+router.put('/user/:userId', (req, res, next) => {
+  const {userId} = req.params;
+  const {username, email, password} = req.body;
+
+  User.findByIdAndUpdate(userId, {username, email, password} , {new: true})
+  .then((response) => res.json(response))
+  .catch((err) => res.json(err))
+ 
+});
+
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     if (err) {

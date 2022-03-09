@@ -29,6 +29,16 @@ router.post('/post-create', (req, res, next) => {
     .catch((err) => next(err));
   });
 
+  router.put('/feed/:postId', (req, res, next) => {
+    const { postId } = req.params;
+    const {description} = req.body
+
+    Post.findByIdAndUpdate(postId, {description}, {new: true})
+    .then((response) => res.json(response))
+    .catch((err) => res.json(err))
+
+});
+
   router.delete('/feed/:postId', (req, res, next) => {
     const { postId } = req.params;
 

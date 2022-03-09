@@ -4,7 +4,7 @@ const User = require('../models/User.model');
 const Post = require('../models/Post.model');
 const Comment = require('../models/Comment.model');
 
-router.post('/feed/:postId/comment', (req, res, next) => {
+router.post('/comment/:postId', (req, res, next) => {
   const { postId } = req.params;
   const { author, post, content } = req.body;
 
@@ -25,7 +25,7 @@ router.post('/feed/:postId/comment', (req, res, next) => {
             dbPost.comments.push(dbComment._id);
             dbPost.save()
              .then((response) => res.json(response));
-           }); */
+           }); */ 
       });
   })
   .catch((err) => next(err));
