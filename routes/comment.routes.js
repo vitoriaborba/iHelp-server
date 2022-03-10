@@ -6,28 +6,17 @@ const Comment = require('../models/Comment.model');
 
 router.post('/comment/:postId', (req, res, next) => {
   const { postId } = req.params;
-  const { author, post, content } = req.body;
+  const { content } = req.body;
 
-
-  User.findOne({ username: author })
-  .then(() =>{
       Post.findById(postId)
       .then(()=>{
-          Comment.create({author:req.session.user._id, post:req.session.user.posts._id, content})
+          Comment.create({author:req.session.user._id, postId, content})
           .then((dbComment) => {
-            return Post.findByIdAndUpdate(post, { $push: { comments: dbComment._id } });
+            return Post.findByIdAndUpdate(postId, { $push: { comments: dbComment._id } });
           })
           .then((response) => res.json(response))
-            /* let newComment = new Comment({ author: user._id, content });
-            newComment.save()
-             .then((dbComment) => {
-            dbPost.comments.push(dbComment._id);
-            dbPost.save()
-             .then((response) => res.json(response));
-           }); */ 
+           .catch((err) => next(err));
       });
-  })
-  .catch((err) => next(err));
 })
 
 router.delete('/post/:commentId', (req, res, next) => {
@@ -35,6 +24,7 @@ router.delete('/post/:commentId', (req, res, next) => {
 
     Comment.findByIdAndRemove(commentId)
     .then((deletedComment) => {
+      console.log(deletedComment)
         return Post.findByIdAndUpdate(deletedComment.post, {$pull: {comments: commentId}})
         .then(() => res.json({message: `Comment with ${commentId} was removed sucessfully`}));
     })
