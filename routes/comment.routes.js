@@ -8,13 +8,12 @@ router.post('/comment/:postId', (req, res, next) => {
   const { postId } = req.params;
   const { author, post, content } = req.body;
 
-  let user;
 
   User.findOne({ username: author })
   .then(() =>{
       Post.findById(postId)
       .then(()=>{
-          Comment.create({author, post, content})
+          Comment.create({author:req.session.user._id, post:req.session.user.posts._id, content})
           .then((dbComment) => {
             return Post.findByIdAndUpdate(post, { $push: { comments: dbComment._id } });
           })
