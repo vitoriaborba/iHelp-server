@@ -3,6 +3,7 @@ const router = require("express").Router();
 const User = require('../models/User.model')
 const Post = require('../models/Post.model');
 
+
 router.post('/post-create', (req, res, next) => {
     const {image, description, comments } = req.body;
               
