@@ -38,8 +38,8 @@ router.post('/post-create', (req, res, next) => {
     .then((taskDone) => { 
       if(isDone === true) {
         return User.findByIdAndUpdate(taskDone.author, {$pull: {posts: postId}})
-        .then(() => {
-        User.findByIdAndUpdate(taskDone.author, {$pull: {postsCompleted: postId}})
+        .then((taskRemoved) => {
+        User.findByIdAndUpdate(taskRemoved.author, {$push: {postsCompleted: postId}})
         })
 
       }
