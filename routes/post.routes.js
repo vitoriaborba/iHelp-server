@@ -17,8 +17,8 @@ router.post('/post-create', (req, res, next) => {
   });
 
   router.get('/feed', (req, res, next) => {
-    User.find()
-      .populate('posts')
+    Post.find({isDone:false})
+      .populate('author')
       .then((response) => res.json(response))
       .catch((err) => next(err));
   });
@@ -37,12 +37,8 @@ router.post('/post-create', (req, res, next) => {
 
     Post.findByIdAndUpdate(postId, {description, isDone}, {new: true})
     .then((taskDone) => { 
-      if(isDone === true) {
-        return User.findByIdAndUpdate(taskDone.author, {$pull: {posts: postId}})
-        .then((taskRemoved) => {
-        User.findByIdAndUpdate(taskRemoved.author, {$push: {postsCompleted: postId}})
-        })
-
+      if(taskDone.isDone === true) {
+        return User.findByIdAndUpdate(taskDone.author, {$pull: {posts: postId}, $push: {postsCompleted: taskDone._id}})
       }
     })
     .then((response) => res.json(response))

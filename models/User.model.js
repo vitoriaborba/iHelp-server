@@ -27,7 +27,7 @@ const userSchema = new Schema(
     trim: true,
    },
    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-   postsCompleted: [{ type: Schema.Types.ObjectId, ref: 'Completed' }],
+   postsCompleted: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
    wasHelped: [{ type: Schema.Types.ObjectId, ref: 'User' }],
    Helped: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 },
