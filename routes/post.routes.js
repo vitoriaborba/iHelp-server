@@ -32,12 +32,20 @@ router.post('/post-create', (req, res, next) => {
 
   router.put('/feed/:postId', (req, res, next) => {
     const { postId } = req.params;
-    const {description} = req.body
+    const {description, isDone} = req.body
 
-    Post.findByIdAndUpdate(postId, {description}, {new: true})
+    Post.findByIdAndUpdate(postId, {description, isDone}, {new: true})
+    .then((taskDone) => { 
+      if(isDone === true) {
+        return User.findByIdAndUpdate(taskDone.author, {$pull: {posts: postId}})
+        .then(() => {
+        User.findByIdAndUpdate(taskDone.author, {$pull: {postsCompleted: postId}})
+        })
+
+      }
+    })
     .then((response) => res.json(response))
     .catch((err) => res.json(err))
-
 });
 
   router.delete('/feed/:postId', (req, res, next) => {

@@ -27,7 +27,9 @@ const userSchema = new Schema(
     trim: true,
    },
    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+   postsCompleted: [{ type: Schema.Types.ObjectId, ref: 'Completed' }],
+   wasHelped: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+   Helped: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 },
   
   {

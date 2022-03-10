@@ -13,7 +13,7 @@ const postSchema = new Schema (
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     isDone: {
         type: Boolean,
-        default: false,
+        default: true,
     }
     ,
       },
