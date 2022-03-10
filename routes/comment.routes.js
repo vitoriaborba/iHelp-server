@@ -8,15 +8,12 @@ router.post('/comment/:postId', (req, res, next) => {
   const { postId } = req.params;
   const { content } = req.body;
 
-      Post.findById(postId)
-      .then(()=>{
-          Comment.create({author:req.session.user._id, postId, content})
+          Comment.create({author:req.session.user._id, post:postId, content})
           .then((dbComment) => {
             return Post.findByIdAndUpdate(postId, { $push: { comments: dbComment._id } });
           })
           .then((response) => res.json(response))
            .catch((err) => next(err));
-      });
 })
 
 router.delete('/post/:commentId', (req, res, next) => {
