@@ -127,6 +127,13 @@ router.get('/users', (req, res, next) => {
     .catch((err) => next(err));
 });
 
+router.get('/user/:id', (req, res, next) => {
+  const {id} = req.params
+  User.findById(id)
+    .then((response) => res.json(response))
+    .catch((err) => next(err));
+});
+
 router.put('/user/:userId', (req, res, next) => {
   const {userId} = req.params;
   const {username, email, password} = req.body;
