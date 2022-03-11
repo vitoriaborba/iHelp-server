@@ -64,7 +64,6 @@ router.post("/signup", (req, res) => {
       })
       .then((user) => {
         // Bind the user to the session object
-        req.session.user = user;
         res.status(201).json(user);
       })
       .catch((error) => {
