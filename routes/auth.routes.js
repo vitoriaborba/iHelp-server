@@ -118,7 +118,7 @@ router.post("/login", (req, res, next) => {
         const payload = { _id, username };
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
           algorithm: 'HS256',
-          expiresIn: '6h',
+          expiresIn: '24h',
         });
        
         // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
@@ -143,6 +143,7 @@ router.get('/users', isAuthenticated, (req, res, next) => {
 router.get('/user/:id', isAuthenticated, (req, res, next) => {
   const {id} = req.params
   User.findById(id)
+    .populate('posts', 'postsCompleted') 
     .then((response) => res.json(response))
     .catch((err) => next(err));
 });
@@ -150,8 +151,12 @@ router.get('/user/:id', isAuthenticated, (req, res, next) => {
 router.put('/user/:userId', isAuthenticated, (req, res, next) => {
   const {userId} = req.params;
   const {username, email, password} = req.body;
+  let image;
+  if (req.file) {
+    image = req.file.path;
+}        
 
-  User.findByIdAndUpdate(userId, {username, email, password} , {new: true})
+  User.findByIdAndUpdate(userId, {username, email, image, password} , {new: true})
   .then((response) => res.json(response))
   .catch((err) => res.json(err))
  

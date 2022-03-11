@@ -6,9 +6,13 @@ const Post = require('../models/Post.model');
 
 
 router.post('/post-create', (req, res, next) => {
-    const {image, description, comments } = req.body;
+    const {description, comments } = req.body;
     const {_id } = req.payload;
-              
+    let image;
+
+    if (req.file) {
+    image = req.file.path;
+}        
     Post.create({ author:_id, image, description, comments})
       .then((dbPost) => {
   
