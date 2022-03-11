@@ -4,13 +4,15 @@ const User = require('../models/User.model')
 const Post = require('../models/Post.model');
 
 
+
 router.post('/post-create', (req, res, next) => {
     const {image, description, comments } = req.body;
+    const {_id } = req.payload;
               
-    Post.create({ author:req.session.user._id, image, description, comments})
+    Post.create({ author:_id, image, description, comments})
       .then((dbPost) => {
-        const userId = req.session.user._id
-        return User.findByIdAndUpdate(userId, { $push: { posts: dbPost._id } });
+  
+        return User.findByIdAndUpdate(_id, { $push: { posts: dbPost._id } });
       })
       .then(() => res.json({message: "posted created"}))
       .catch((err) => next(err));

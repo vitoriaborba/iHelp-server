@@ -5,8 +5,9 @@ const Comment = require('../models/Comment.model');
 router.post('/comment/:postId', (req, res, next) => {
   const { postId } = req.params;
   const { content } = req.body;
+  const {_id } = req.payload;
 
-          Comment.create({author:req.session.user._id, post:postId, content})
+          Comment.create({author:_id, post:postId, content})
           .then((dbComment) => {
             return Post.findByIdAndUpdate(postId, { $push: { comments: dbComment._id } });
           })
