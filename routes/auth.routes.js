@@ -140,6 +140,12 @@ router.get('/users', isAuthenticated, (req, res, next) => {
     .then((response) => res.json(response))
     .catch((err) => next(err));
 });
+router.get('/user/:id', isAuthenticated, (req, res, next) => {
+  const {id} = req.params
+  User.findById(id)
+    .then((response) => res.json(response))
+    .catch((err) => next(err));
+});
 
 router.put('/user/:userId', isAuthenticated, (req, res, next) => {
   const {userId} = req.params;
