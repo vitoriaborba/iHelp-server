@@ -33,6 +33,8 @@ router.post('/post-create', (req, res, next) => {
     const { postId } = req.params;
   
     Post.findById(postId)
+    .populate('author')
+    .populate('comments')
     .then((response) => res.json(response))
     .catch((err) => next(err));
   });
