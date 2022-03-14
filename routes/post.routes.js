@@ -29,12 +29,29 @@ router.post('/post-create', (req, res, next) => {
       .catch((err) => next(err));
   });
 
+  router.get('/requests/:userId', (req, res, next) => {
+    const {userId} = req.params;
+    User.findById(userId)
+      .populate('posts postsCompleted')
+      .then((response) => {
+        console.log(response)
+        res.json(response)
+      })
+      .catch((err) => next(err));
+  });
+
   router.get('/feed/:postId', (req, res, next) => {
     const { postId } = req.params;
   
     Post.findById(postId)
-    .populate('author')
-    .populate('comments')
+    .populate('author comments')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'author',
+        model: 'User',
+      },
+    })
     .then((response) => res.json(response))
     .catch((err) => next(err));
   });

@@ -25,6 +25,11 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
 
 router.post("/signup", (req, res) => {
   const { username, email, password } = req.body;
+  let image;
+
+  if (req.file) {
+  image = req.file.path;
+}   
 
   if (!username) {
     return res
@@ -59,6 +64,7 @@ router.post("/signup", (req, res) => {
         return User.create({
           username,
           email,
+          image,
           password: hashedPassword,
         });
       })
@@ -139,6 +145,15 @@ router.get('/users', isAuthenticated, (req, res, next) => {
     .then((response) => res.json(response))
     .catch((err) => next(err));
 });
+
+router.get('/user', isAuthenticated, (req, res, next) => {
+  const {_id} = req.payload
+  User.findById(_id)
+    .populate('posts', 'postsCompleted') 
+    .then((response) => res.json(response))
+    .catch((err) => next(err));
+});
+
 router.get('/user/:id', isAuthenticated, (req, res, next) => {
   const {id} = req.params
   User.findById(id)

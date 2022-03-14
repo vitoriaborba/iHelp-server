@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     allowed_formats: ["jpg", "jpeg", "png"],
-    folder: "cloudinary-example",
+    folder: "helpDB",
     //resource_type: raw -> upload all types of files
   },
 });
