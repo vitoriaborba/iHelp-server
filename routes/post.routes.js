@@ -64,7 +64,10 @@ router.post('/post-create', (req, res, next) => {
     .then((taskDone) => { 
       if(taskDone.isDone === true) {
         return User.findByIdAndUpdate(taskDone.author, {$pull: {posts: postId}, $push: {postsCompleted: taskDone._id}})
+      }else{
+        return User.findByIdAndUpdate(taskDone.author, {$push: {posts: postId}, $pull: {postsCompleted: taskDone._id}})
       }
+
     })
     .then((response) => res.json(response))
     .catch((err) => res.json(err))

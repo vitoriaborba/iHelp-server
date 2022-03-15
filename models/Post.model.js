@@ -14,8 +14,8 @@ const postSchema = new Schema (
     isDone: {
         type: Boolean,
         default: false,
-    }
-    ,
+    },
+    
       },
       {
         timestamps: true,
