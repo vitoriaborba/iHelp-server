@@ -16,7 +16,7 @@ router.post('/comment/:postId', (req, res, next) => {
 })
 
 router.delete('/post/:commentId', (req, res, next) => {
-    const {commentId} = req.params;
+    const {commentId} = req.params
 
     Comment.findByIdAndRemove(commentId)
     .then((deletedComment) => {
