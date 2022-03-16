@@ -6,14 +6,14 @@ const Post = require('../models/Post.model');
 
 
 router.post('/post-create', (req, res, next) => {
-    const {description, comments } = req.body;
+    const {location, description, comments } = req.body;
     const {_id } = req.payload;
     let image;
 
     if (req.file) {
     image = req.file.path;
 }        
-    Post.create({ author:_id, image, description, comments})
+    Post.create({ author:_id, image, location, description, comments})
       .then((dbPost) => {
   
         return User.findByIdAndUpdate(_id, { $push: { posts: dbPost._id } });
