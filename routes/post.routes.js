@@ -2,17 +2,26 @@ const router = require("express").Router();
 
 const User = require('../models/User.model')
 const Post = require('../models/Post.model');
+const fileUploader = require("../config/cloudinary.config");
 
-
+router.post("/upload", fileUploader.single("image"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
+});
 
 router.post('/post-create', (req, res, next) => {
-    const {location, description, comments } = req.body;
+    const {location, description, image, comments } = req.body;
     const {_id } = req.payload;
-    let image;
-
-    if (req.file) {
-    image = req.file.path;
-}        
+ 
     Post.create({ author:_id, image, location, description, comments})
       .then((dbPost) => {
   
