@@ -178,11 +178,8 @@ router.get('/user/:id', isAuthenticated, (req, res, next) => {
 
 router.put('/user/:userId', isAuthenticated, (req, res, next) => {
   const {userId} = req.params;
-  const {username, email, password} = req.body;
-  let image;
-  if (req.file) {
-    image = req.file.path;
-}        
+  const {username, email, image, password} = req.body;
+  console.log(req.body)
 
   User.findByIdAndUpdate(userId, {username, email, image, password} , {new: true})
   .then((response) => res.json(response))
