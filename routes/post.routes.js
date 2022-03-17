@@ -21,6 +21,7 @@ router.post("/upload", fileUploader.single("image"), (req, res, next) => {
 router.post('/post-create', (req, res, next) => {
     const {location, description, image, comments } = req.body;
     const {_id } = req.payload;
+  
  
     Post.create({ author:_id, image, location, description, comments})
       .then((dbPost) => {
